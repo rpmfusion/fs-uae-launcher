@@ -2,7 +2,7 @@
 
 Name:           fs-uae-launcher
 Version:        2.8.3
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Graphical configuration frontend and launcher for FS-UAE
 
 #  The entire source code is GPLv2+ except oyoyo which is MIT
@@ -67,9 +67,9 @@ desktop-file-validate \
   %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 # Install AppData file
-install -d %{buildroot}%{_datadir}/appdata
-install -p -m 644 %{SOURCE1} %{buildroot}%{_datadir}/appdata
-appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/%{name}.appdata.xml
+install -d %{buildroot}%{_datadir}/metainfo
+install -p -m 644 %{SOURCE1} %{buildroot}%{_datadir}/metainfo
+appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata.xml
 
 # Symlink system fonts
 rm %{buildroot}%{_datadir}/%{name}/workspace/ui/data/NotoSans-Regular.ttf
@@ -88,25 +88,10 @@ ln -s %{_datadir}/fonts/liberation/LiberationSans-Bold.ttf \
 %find_lang %{name}
 
 
-%post
-/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-
-
-%postun
-if [ $1 -eq 0 ] ; then
-    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-
-%posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-
-
 %files -f %{name}.lang
 %{_bindir}/%{name}
 %{_datadir}/%{name}
-%{_datadir}/appdata/%{name}.appdata.xml
+%{_datadir}/metainfo/%{name}.appdata.xml
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %doc %{_pkgdocdir}
@@ -115,6 +100,11 @@ fi
 
 
 %changelog
+* Sun May 20 2018 Andrea Musuruane <musuruan@gmail.com> - 2.8.3-6
+- Fixed AppData file (BZ #4845)
+- Used new AppData directory
+- Removed obsolete scriptlets
+
 * Thu Mar 01 2018 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 2.8.3-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2017 Andrea Musuruane <musuruan@gmail.com -->
 <component type="desktop">
-  <id>abbaye.desktop</id>
+  <id>fs-uae-launcher.desktop</id>
   <metadata_license>CC-BY-SA-3.0</metadata_license>
   <project_license>GPL-2.0+ and MIT</project_license>
   <name>FS-UAE Launcher</name>
