@@ -39,6 +39,19 @@ FS-UAE Launcher is a graphical configuration program and launcher for FS-UAE.
 %prep
 %autosetup -p0
 
+# In Python 3.7 async is a keyword, and so we can't have a module named async
+# https://github.com/mcfletch/pyopengl/issues/14
+# https://github.com/FrodeSolheim/fs-uae-launcher/issues/62
+# https://src.fedoraproject.org/rpms/python-pyopengl/c/fcae096bceb00a47990317f437197e41ff023e95
+mv OpenGL/GL/SGIX/async.py \
+   OpenGL/GL/SGIX/async_.py
+
+mv OpenGL/raw/GL/SGIX/async.py \
+   OpenGL/raw/GL/SGIX/async_.py
+
+sed -i -e 's/from OpenGL.raw.GL.SGIX.async/from OpenGL.raw.GL.SGIX.async_/g' \
+    OpenGL/GL/SGIX/async_.py
+
 # Remove bundled lib
 rm -rf six
 
