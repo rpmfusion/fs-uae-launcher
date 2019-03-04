@@ -2,7 +2,7 @@
 
 Name:           fs-uae-launcher
 Version:        2.8.3
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Graphical configuration frontend and launcher for FS-UAE
 
 #  The entire source code is GPLv2+ except oyoyo which is MIT
@@ -113,6 +113,9 @@ ln -s %{_datadir}/fonts/liberation/LiberationSans-Bold.ttf \
 
 
 %changelog
+* Mon Mar 04 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.8.3-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Sun Aug 19 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.8.3-9
 - Rebuilt for Fedora 29 Mass Rebuild binutils issue
 
