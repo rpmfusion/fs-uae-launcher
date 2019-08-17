@@ -1,19 +1,15 @@
 %global __python %{__python3}
 
 Name:           fs-uae-launcher
-Version:        2.8.3
-Release:        11%{?dist}
+Version:        3.0.0
+Release:        1%{?dist}
 Summary:        Graphical configuration frontend and launcher for FS-UAE
 
 #  The entire source code is GPLv2+ except oyoyo which is MIT
 License:        GPLv2+ and MIT
 URL:            http://fs-uae.net/
-Source0:        http://fs-uae.net/fs-uae/stable/%{version}/%{name}-%{version}.tar.gz
+Source0:        http://fs-uae.net/stable/%{version}/%{name}-%{version}.tar.gz
 Source1:        %{name}.appdata.xml
-# Remove six python library
-# Patch from AUR linux
-# https://aur.archlinux.org/cgit/aur.git/tree/remove_inbuilt_six.patch?h=fs-uae-launcher
-Patch0:         %{name}-2.8.3-remove_inbuilt_six.patch
 
 BuildArch:      noarch
 
@@ -23,7 +19,8 @@ BuildRequires:  libappstream-glib
 BuildRequires:  desktop-file-utils
 Requires:       hicolor-icon-theme
 Requires:       python3-qt5
-Requires:       python3-six
+Requires:       python3-requests
+Requires:       python3-pyopengl
 Requires:       google-noto-sans-fonts
 Requires:       google-roboto-fonts
 Requires:       liberation-sans-fonts
@@ -37,31 +34,23 @@ FS-UAE Launcher is a graphical configuration program and launcher for FS-UAE.
 
 
 %prep
-%autosetup -p0
+%autosetup
 
-# In Python 3.7 async is a keyword, and so we can't have a module named async
-# https://github.com/mcfletch/pyopengl/issues/14
-# https://github.com/FrodeSolheim/fs-uae-launcher/issues/62
-# https://src.fedoraproject.org/rpms/python-pyopengl/c/fcae096bceb00a47990317f437197e41ff023e95
-mv OpenGL/GL/SGIX/async.py \
-   OpenGL/GL/SGIX/async_.py
-
-mv OpenGL/raw/GL/SGIX/async.py \
-   OpenGL/raw/GL/SGIX/async_.py
-
-sed -i -e 's/from OpenGL.raw.GL.SGIX.async/from OpenGL.raw.GL.SGIX.async_/g' \
-    OpenGL/GL/SGIX/async_.py
-
-# Remove bundled lib
-rm -rf six
+# Remove bundled OpenGL library
+rm -rf OpenGL
+sed -i -r "/OpenGL/d" setup.py
 
 # Remove shebang from non executable scripts
-FILES="OpenGL/arrays/_buffers.py
-  OpenGL/arrays/buffers.py
+FILES="amitools/tools/geotool.py
+  amitools/tools/rdbtool.py
+  amitools/tools/xdfscan.py
+  amitools/tools/xdftool.py
+  amitools/util/BlkDevTools.py
   arcade/res/update.py
   fsgs/amiga/adf.py
   fstd/adffile.py
-  launcher/apps/__init__.py"
+  launcher/apps/__init__.py
+  oyoyo/examplebot.py"
 for pyfile in $FILES
 do
   sed -i -e '/^#!/, 1d' $pyfile
@@ -80,9 +69,9 @@ desktop-file-validate \
   %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 # Install AppData file
-install -d %{buildroot}%{_datadir}/metainfo
-install -p -m 644 %{SOURCE1} %{buildroot}%{_datadir}/metainfo
-appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata.xml
+install -d %{buildroot}%{_metainfodir}
+install -p -m 644 %{SOURCE1} %{buildroot}%{_metainfodir}
+appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 
 # Symlink system fonts
 rm %{buildroot}%{_datadir}/%{name}/workspace/ui/data/NotoSans-Regular.ttf
@@ -104,7 +93,7 @@ ln -s %{_datadir}/fonts/liberation/LiberationSans-Bold.ttf \
 %files -f %{name}.lang
 %{_bindir}/%{name}
 %{_datadir}/%{name}
-%{_datadir}/metainfo/%{name}.appdata.xml
+%{_metainfodir}/%{name}.appdata.xml
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 %doc %{_pkgdocdir}
@@ -113,6 +102,9 @@ ln -s %{_datadir}/fonts/liberation/LiberationSans-Bold.ttf \
 
 
 %changelog
+* Tue Aug 13 2019 Andrea Musuruane <musuruan@gmail.com> - 3.0.0-1
+- Updated to new upstream release
+
 * Fri Aug 09 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.8.3-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
