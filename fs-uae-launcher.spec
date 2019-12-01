@@ -1,7 +1,7 @@
 %global __python %{__python3}
 
 Name:           fs-uae-launcher
-Version:        3.0.0
+Version:        3.0.2
 Release:        1%{?dist}
 Summary:        Graphical configuration frontend and launcher for FS-UAE
 
@@ -83,7 +83,7 @@ ln -s %{_datadir}/fonts/google-roboto/Roboto-Regular.ttf \
     %{buildroot}%{_datadir}/%{name}/workspace/ui/data/Roboto-Regular.ttf
 
 rm %{buildroot}%{_datadir}/%{name}/arcade/res/LiberationSans-Bold.ttf
-ln -s %{_datadir}/fonts/liberation/LiberationSans-Bold.ttf \
+ln -s %{_datadir}/fonts/liberation-sans/LiberationSans-Bold.ttf \
     %{buildroot}%{_datadir}/%{name}/arcade/res/LiberationSans-Bold.ttf
 
 
@@ -102,6 +102,9 @@ ln -s %{_datadir}/fonts/liberation/LiberationSans-Bold.ttf \
 
 
 %changelog
+* Sat Nov 30 2019 Andrea Musuruane <musuruan@gmail.com> - 3.0.2-1
+- Updated to new upstream release
+
 * Tue Aug 13 2019 Andrea Musuruane <musuruan@gmail.com> - 3.0.0-1
 - Updated to new upstream release
 
