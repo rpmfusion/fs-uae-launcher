@@ -1,8 +1,8 @@
 %global __python %{__python3}
 
 Name:           fs-uae-launcher
-Version:        3.0.2
-Release:        2%{?dist}
+Version:        3.0.5
+Release:        1%{?dist}
 Summary:        Graphical configuration frontend and launcher for FS-UAE
 
 #  The entire source code is GPLv2+ except oyoyo which is MIT
@@ -102,6 +102,9 @@ ln -s %{_datadir}/fonts/liberation-sans/LiberationSans-Bold.ttf \
 
 
 %changelog
+* Sat Apr 25 2020 Andrea Musuruane <musuruan@gmail.com> - 3.0.5-1
+- Updated to new upstream release
+
 * Tue Feb 04 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.0.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
