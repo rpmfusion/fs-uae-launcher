@@ -2,7 +2,7 @@
 
 Name:           fs-uae-launcher
 Version:        3.0.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Graphical configuration frontend and launcher for FS-UAE
 
 #  The entire source code is GPLv2+ except oyoyo which is MIT
@@ -102,6 +102,9 @@ ln -s %{_datadir}/fonts/liberation-sans/LiberationSans-Bold.ttf \
 
 
 %changelog
+* Mon Aug 02 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.0.5-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Wed Feb 03 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.0.5-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
