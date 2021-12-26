@@ -1,18 +1,19 @@
 %global __python %{__python3}
 
 Name:           fs-uae-launcher
-Version:        3.0.5
-Release:        4%{?dist}
+Version:        3.1.66
+Release:        1%{?dist}
 Summary:        Graphical configuration frontend and launcher for FS-UAE
 
 #  The entire source code is GPLv2+ except oyoyo which is MIT
 License:        GPLv2+ and MIT
 URL:            http://fs-uae.net/
-Source0:        http://fs-uae.net/stable/%{version}/%{name}-%{version}.tar.gz
+Source0:        http://fs-uae.net/files/FS-UAE-Launcher/Stable/%{version}/%{name}-%{version}.tar.xz
 Source1:        %{name}.appdata.xml
 
 BuildArch:      noarch
 
+BuildRequires:  make
 BuildRequires:  python3-devel
 BuildRequires:  gettext
 BuildRequires:  libappstream-glib
@@ -24,7 +25,7 @@ Requires:       python3-pyopengl
 Requires:       google-noto-sans-fonts
 Requires:       google-roboto-fonts
 Requires:       liberation-sans-fonts
-Requires:       fs-uae = %{version}
+Requires:       fs-uae
 
 # oyoyo is not in Fedora
 Provides:       bundled(python3-oyoyo) = 0.0.0
@@ -102,6 +103,9 @@ ln -s %{_datadir}/fonts/liberation-sans/LiberationSans-Bold.ttf \
 
 
 %changelog
+* Sat Dec 25 2021 Andrea Musuruane <musuruan@gmail.com> - 3.1.66-1
+- Updated to new upstream release
+
 * Mon Aug 02 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 3.0.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
