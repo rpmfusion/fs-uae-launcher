@@ -1,14 +1,12 @@
-%global __python %{__python3}
-
 Name:           fs-uae-launcher
-Version:        3.1.66
-Release:        10%{?dist}
+Version:        3.2.35
+Release:        1%{?dist}
 Summary:        Graphical configuration frontend and launcher for FS-UAE
 
 #  The entire source code is GPLv2+ except oyoyo which is MIT
 License:        GPLv2+ and MIT
 URL:            http://fs-uae.net/
-Source0:        http://fs-uae.net/files/FS-UAE-Launcher/Stable/%{version}/%{name}-%{version}.tar.xz
+Source0:        https://github.com/FrodeSolheim/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.xz
 Source1:        %{name}.appdata.xml
 
 BuildArch:      noarch
@@ -38,25 +36,24 @@ FS-UAE Launcher is a graphical configuration program and launcher for FS-UAE.
 %prep
 %autosetup
 
-# Remove bundled OpenGL library
-rm -rf OpenGL
-sed -i -r "/OpenGL/d" setup.py
-
 # Remove shebang from non executable scripts
 FILES="amitools/tools/geotool.py
   amitools/tools/rdbtool.py
   amitools/tools/xdfscan.py
   amitools/tools/xdftool.py
   amitools/util/BlkDevTools.py
-  arcade/res/update.py
   fsgs/amiga/adf.py
   fstd/adffile.py
   launcher/apps/__init__.py
-  oyoyo/examplebot.py"
+  oyoyo/examplebot.py
+  share/fs-uae-launcher/resources/arcade/res/update.py"
 for pyfile in $FILES
 do
   sed -i -e '/^#!/, 1d' $pyfile
 done
+
+# Fix permissions
+chmod 644 share/fs-uae-launcher/resources/fsgs/res/amiga/adf_save_disk.dat
 
 
 %build
@@ -78,15 +75,15 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.appdata.xml
 # Symlink system fonts
 rm %{buildroot}%{_datadir}/%{name}/workspace/ui/data/NotoSans-Regular.ttf
 ln -s %{_datadir}/fonts/google-noto/NotoSans-Regular.ttf \
-    %{buildroot}%{_datadir}/%{name}/workspace/ui/data/NotoSans-Regular.ttf
+   %{buildroot}%{_datadir}/%{name}/workspace/ui/data/NotoSans-Regular.ttf
 
 rm %{buildroot}%{_datadir}/%{name}/workspace/ui/data/Roboto-Regular.ttf
 ln -s %{_datadir}/fonts/google-roboto/Roboto-Regular.ttf \
-    %{buildroot}%{_datadir}/%{name}/workspace/ui/data/Roboto-Regular.ttf
+   %{buildroot}%{_datadir}/%{name}/workspace/ui/data/Roboto-Regular.ttf
 
-rm %{buildroot}%{_datadir}/%{name}/arcade/res/LiberationSans-Bold.ttf
+rm %{buildroot}%{_datadir}/%{name}/resources/arcade/res/LiberationSans-Bold.ttf
 ln -s %{_datadir}/fonts/liberation-sans-fonts/LiberationSans-Bold.ttf \
-    %{buildroot}%{_datadir}/%{name}/arcade/res/LiberationSans-Bold.ttf
+   %{buildroot}%{_datadir}/%{name}/resources/arcade/res/LiberationSans-Bold.ttf
 
 
 %find_lang %{name}
@@ -104,6 +101,15 @@ ln -s %{_datadir}/fonts/liberation-sans-fonts/LiberationSans-Bold.ttf \
 
 
 %changelog
+* Fri Sep 19 2025 Andrea Musuruane <musuruan@gmail.com> - 3.2.35-1
+- Updated to new upstream release
+
+* Thu Sep 18 2025 Andrea Musuruane <musuruan@gmail.com> - 3.2.22-1
+- Updated to new upstream release
+
+* Thu Sep 11 2025 Andrea Musuruane <musuruan@gmail.com> - 3.2.20-1
+- Updated to new upstream release
+
 * Sun Jul 27 2025 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 3.1.66-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
 
